@@ -6,3 +6,6 @@ class GestionareRetete:
 
     def adauga_reteta(self, reteta):
       self.retete.append(reteta)   #primim o reteta si se adauga in lista prin append()
+
+    def afiseaza_retete(self):
+            return self.retete    #returnam lista tuturor retetelor existente, return trimite lista catre partea de program care a apelat o, print doar afiseaza
