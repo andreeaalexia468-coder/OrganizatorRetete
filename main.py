@@ -1,7 +1,10 @@
 from clase import Ingredient, Reteta
 from gestionare_retete import GestionareRetete
+from salvare_date import salveaza_date, incarca_retete
 
 gestiune = GestionareRetete() #am creat obiectul care gestioneaza retetele
+gestiune = GestionareRetete()
+gestiune.retete = incarca_retete()
 
 faina = Ingredient("Faina", 200, "grame")
 lapte = Ingredient("Lapte", 500, "ml")
