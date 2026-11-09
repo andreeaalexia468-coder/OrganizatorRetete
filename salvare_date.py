@@ -1,0 +1,66 @@
+
+import json
+from pathlib import Path
+from backend.clase import Ingredient, Reteta
+
+
+CALE_FISIER = Path(__file__).resolve().parent.parent / "date" / "retete.json"
+
+
+def salveaza_retete(retete):
+    CALE_FISIER.parent.mkdir(parents=True, exist_ok=True)
+
+    lista_retete = []
+
+    for reteta in retete:
+        date_reteta = {
+            "titlu": reteta.titlu,
+            "ingrediente": [],
+            "pasi": reteta.pasi
+        }
+
+        for ingredient in reteta.ingrediente:
+            date_ingredient = {
+                "nume": ingredient.nume,
+                "cantitate": ingredient.cantitate,
+                "unitate": ingredient.unitate
+            }
+
+            date_reteta["ingrediente"].append(date_ingredient)
+
+        lista_retete.append(date_reteta)
+
+    with open(CALE_FISIER, "w", encoding="utf-8") as fisier:
+        json.dump(lista_retete, fisier, ensure_ascii=False, indent=4)
+
+
+def incarca_retete():
+    if not CALE_FISIER.exists():
+        return []
+
+    with open(CALE_FISIER, "r", encoding="utf-8") as fisier:
+        lista_retete = json.load(fisier)
+
+    retete = []
+
+    for date_reteta in lista_retete:
+        ingrediente = []
+
+        for date_ingredient in date_reteta["ingrediente"]:
+            ingredient = Ingredient(
+                date_ingredient["nume"],
+                date_ingredient["cantitate"],
+                date_ingredient["unitate"]
+            )
+
+            ingrediente.append(ingredient)
+
+        reteta = Reteta(
+            date_reteta["titlu"],
+            ingrediente,
+            date_reteta["pasi"]
+        )
+
+        retete.append(reteta)
+
+    return retete
