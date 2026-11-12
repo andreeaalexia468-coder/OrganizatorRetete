@@ -1,4 +1,4 @@
-from clase import Ingredient, Reteta
+from clase import Ingredient, Pas, Reteta
 from gestionare_retete import GestionareRetete
 from salvare_date import salveaza_date, incarca_retete
 
@@ -11,7 +11,16 @@ lapte = Ingredient("Lapte", 500, "ml")
 oua = Ingredient("Oua", 2, "bucati")
 
 ingrediente_clatite = [faina, lapte, oua]
-clatite = Reteta("Clatite", ingrediente_clatite, ["Amestecam ingredientele", "Coacem clatitele"])
+pas1 = Pas(1,"Amestecam ingredientele", ["Faina", "Lapte", "Oua"])
+
+pas2 = Pas(2,"Lasam aluatul sa se odihneasca",[])
+
+pas3 = Pas(3,"Coacem clatitele",[])
+
+pasi_clatite = [pas1, pas2, pas3]
+
+clatite = Reteta("Clatite",ingrediente_clatite,pasi_clatite)
+
 
 gestiune.adauga_reteta(clatite)
 
