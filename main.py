@@ -1,6 +1,6 @@
 from clase import Ingredient, Pas, Reteta
 from gestionare_retete import GestionareRetete
-from salvare_date import salveaza_date, incarca_retete
+from salvare_date import salveaza_retete, incarca_retete
 
 gestiune = GestionareRetete() #am creat obiectul care gestioneaza retetele
 gestiune = GestionareRetete()
