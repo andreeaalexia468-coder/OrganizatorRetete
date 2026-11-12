@@ -1,7 +1,7 @@
 
 import json
 from pathlib import Path
-from backend.clase import Ingredient, Reteta
+from backend.clase import Ingredient, Pas, Reteta
 
 
 CALE_FISIER = Path(__file__).resolve().parent.parent / "date" / "retete.json"
@@ -16,7 +16,7 @@ def salveaza_retete(retete):
         date_reteta = {
             "titlu": reteta.titlu,
             "ingrediente": [],
-            "pasi": reteta.pasi
+            "pasi": []
         }
 
         for ingredient in reteta.ingrediente:
@@ -25,8 +25,16 @@ def salveaza_retete(retete):
                 "cantitate": ingredient.cantitate,
                 "unitate": ingredient.unitate
             }
-
             date_reteta["ingrediente"].append(date_ingredient)
+        for pas in reteta.pasi:
+            date_pas = {
+                "ordine": pas.ordine,
+                "descriere": pas.descriere,
+                "ingrediente_folosite": pas.ingrediente_folosite
+            }
+
+            date_reteta["pasi"].append(date_pas)
+            
 
         lista_retete.append(date_reteta)
 
@@ -37,9 +45,11 @@ def salveaza_retete(retete):
 def incarca_retete():
     if not CALE_FISIER.exists():
         return []
-
+try:
     with open(CALE_FISIER, "r", encoding="utf-8") as fisier:
         lista_retete = json.load(fisier)
+except (json.JSONDecodeError, OSError):
+    return []
 
     retete = []
 
@@ -54,11 +64,21 @@ def incarca_retete():
             )
 
             ingrediente.append(ingredient)
+        pasi = []
 
+        for date_pas in date_reteta["pasi"]:
+            pas = Pas(
+                date_pas["ordine"],
+                date_pas["descriere"],
+                date_pas["ingrediente_folosite"]
+            )
+
+            pasi.append(pas)
+        
         reteta = Reteta(
             date_reteta["titlu"],
             ingrediente,
-            date_reteta["pasi"]
+            pasi
         )
 
         retete.append(reteta)
