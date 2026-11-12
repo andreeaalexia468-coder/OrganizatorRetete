@@ -1,10 +1,10 @@
 
 import json
 from pathlib import Path
-from backend.clase import Ingredient, Pas, Reteta
+from clase import Ingredient, Pas, Reteta
 
 
-CALE_FISIER = Path(__file__).resolve().parent.parent / "date" / "retete.json"
+CALE_FISIER = Path(__file__).resolve().parent / "retete.json"
 
 
 def salveaza_retete(retete):
@@ -45,11 +45,11 @@ def salveaza_retete(retete):
 def incarca_retete():
     if not CALE_FISIER.exists():
         return []
-try:
-    with open(CALE_FISIER, "r", encoding="utf-8") as fisier:
-        lista_retete = json.load(fisier)
-except (json.JSONDecodeError, OSError):
-    return []
+    try:
+        with open(CALE_FISIER, "r", encoding="utf-8") as fisier:
+            lista_retete = json.load(fisier)
+    except (json.JSONDecodeError, OSError):
+        return []
 
     retete = []
 
