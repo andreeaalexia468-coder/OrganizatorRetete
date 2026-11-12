@@ -8,6 +8,7 @@ CALE_FISIER = Path(__file__).resolve().parent / "retete.json"
 
 
 def salveaza_retete(retete):
+    print("Fisierul se salveaza la:", CALE_FISIER)
     CALE_FISIER.parent.mkdir(parents=True, exist_ok=True)
 
     lista_retete = []
