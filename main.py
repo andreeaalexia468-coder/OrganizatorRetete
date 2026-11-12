@@ -23,6 +23,7 @@ clatite = Reteta("Clatite",ingrediente_clatite,pasi_clatite)
 
 
 gestiune.adauga_reteta(clatite)
+salveaza_retete(gestiune.retete)
 
 for reteta in gestiune.afiseaza_retete():
     print("Reteta:", reteta.titlu)
