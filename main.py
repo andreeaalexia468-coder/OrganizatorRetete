@@ -3,7 +3,6 @@ from gestionare_retete import GestionareRetete
 from salvare_date import salveaza_retete, incarca_retete
 
 gestiune = GestionareRetete() #am creat obiectul care gestioneaza retetele
-gestiune = GestionareRetete()
 gestiune.retete = incarca_retete()
 
 faina = Ingredient("Faina", 200, "grame")
@@ -21,8 +20,9 @@ pasi_clatite = [pas1, pas2, pas3]
 
 clatite = Reteta("Clatite",ingrediente_clatite,pasi_clatite)
 
+if not gestiune.retete:
+    gestiune.adauga_reteta(clatite)
 
-gestiune.adauga_reteta(clatite)
 salveaza_retete(gestiune.retete)
 
 for reteta in gestiune.afiseaza_retete():
@@ -32,4 +32,4 @@ for reteta in gestiune.afiseaza_retete():
       print(ingredient.nume, ingredient.cantitate, ingredient.unitate)
     print("Pasi de preparare:")
     for pas in reteta.pasi:
-      print("-", pas)
+      print(pas.ordine, "-", pas.descriere)
