@@ -1,22 +1,86 @@
-from clase import Ingredient, Reteta  #importam clasele definite in primul fisier, ca sa folosim aici
 
-class GestionareRetete:
-    def __init__(self):
-        self.retete = []  #self.retete este lista in care pastram toate retetele, initial fiind goala []
+import json
+from pathlib import Path
+from clase import Ingredient, Pas, Reteta
 
-    def adauga_reteta(self, reteta):
-      self.retete.append(reteta)   #primim o reteta si se adauga in lista prin append()
 
-    def afiseaza_retete(self):
-            return self.retete    #returnam lista tuturor retetelor existente, return trimite lista catre partea de program care a apelat o, print doar afiseaza
+CALE_FISIER = Path(__file__).resolve().parent / "retete.json"
 
-    def cauta_dupa_ingredient(self, nume_ingredient):
-        retete_gasite = []
 
-        for reteta in self.retete:
-            for ingredient in reteta.ingrediente:
-                if ingredient.nume.lower() == nume_ingredient.lower():
-                    retete_gasite.append(reteta)
-                    break
+def salveaza_retete(retete):
+    CALE_FISIER.parent.mkdir(parents=True, exist_ok=True)
 
-        return retete_gasite
+    lista_retete = []
+
+    for reteta in retete:
+        date_reteta = {
+            "titlu": reteta.titlu,
+            "ingrediente": [],
+            "pasi": []
+        }
+
+        for ingredient in reteta.ingrediente:
+            date_ingredient = {
+                "nume": ingredient.nume,
+                "cantitate": ingredient.cantitate,
+                "unitate": ingredient.unitate
+            }
+            date_reteta["ingrediente"].append(date_ingredient)
+        for pas in reteta.pasi:
+            date_pas = {
+                "ordine": pas.ordine,
+                "descriere": pas.descriere,
+                "ingrediente_folosite": pas.ingrediente_folosite
+            }
+
+            date_reteta["pasi"].append(date_pas)
+            
+
+        lista_retete.append(date_reteta)
+
+    with open(CALE_FISIER, "w", encoding="utf-8") as fisier:
+        json.dump(lista_retete, fisier, ensure_ascii=False, indent=4)
+
+
+def incarca_retete():
+    if not CALE_FISIER.exists():
+        return []
+    try:
+        with open(CALE_FISIER, "r", encoding="utf-8") as fisier:
+            lista_retete = json.load(fisier)
+    except (json.JSONDecodeError, OSError):
+        return []
+
+    retete = []
+
+    for date_reteta in lista_retete:
+        ingrediente = []
+
+        for date_ingredient in date_reteta["ingrediente"]:
+            ingredient = Ingredient(
+                date_ingredient["nume"],
+                date_ingredient["cantitate"],
+                date_ingredient["unitate"]
+            )
+
+            ingrediente.append(ingredient)
+        pasi = []
+
+        for date_pas in date_reteta["pasi"]:
+            pas = Pas(
+                date_pas["ordine"],
+                date_pas["descriere"],
+                date_pas["ingrediente_folosite"]
+            )
+
+            pasi.append(pas)
+        
+        reteta = Reteta(
+            date_reteta["titlu"],
+            ingrediente,
+            pasi
+        )
+
+        retete.append(reteta)
+
+    return retete
