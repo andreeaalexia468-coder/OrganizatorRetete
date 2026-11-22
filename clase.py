@@ -1,5 +1,11 @@
 class Ingredient:
   def __init__(self, nume, cantitate, unitate):
+      if not unitate.strip():
+          raise ValueError("Unitatea de masura nu poate fi goala!")
+
+      if not nume.strip():
+          raise ValueError("Numele ingredientului nu poate fi gol!")
+
       if cantitate <= 0:
             raise ValueError("Cantitatea trebuie sa fie pozitiva!")
       self.nume = nume
